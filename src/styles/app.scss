@@ -1,5 +1,20 @@
-@import "~tailwindcss/base";
+@import "tailwindcss/base";
 
-@import "~tailwindcss/components";
+@import "tailwindcss/components";
 
-@import "~tailwindcss/utilities";
+@import "tailwindcss/utilities";
+
+/* purgecss start ignore */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+a:focus {
+  outline: none;
+}
+#app {
+  min-height: 100vh;
+}
+/* purgecss end ignore */

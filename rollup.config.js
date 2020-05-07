@@ -1,11 +1,22 @@
+import path from 'path';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import alias from '@rollup/plugin-alias';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import postcss from 'rollup-plugin-postcss';
+
+import autoPreprocess from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
+
+const customResolver = resolve({
+  browser: true,
+  dedupe: ['svelte'],
+  extensions: ['.mjs', '.js'],
+});
+const projectRootDir = path.resolve(__dirname);
+const aliases = ['modules', 'components', 'router'];
 
 export default {
   input: 'src/main.js',
@@ -16,28 +27,25 @@ export default {
     file: 'public/build/bundle.js',
   },
   plugins: [
-    postcss({
-      plugins: [
-        require('tailwindcss'),
-        require('autoprefixer'),
-      ],
-      extract: true,
-      minimize: production,
+    alias({
+      entries: aliases.map((a) => (
+        {
+          find: a,
+          replacement: path.resolve(projectRootDir, `src/${a}`),
+        }
+      )),
+      customResolver,
     }),
     svelte({
-      // enable run-time checks when not in production
       dev: !production,
-      // we'll extract any component CSS out into
-      // a separate file - better for performance
+      preprocess: autoPreprocess({
+        postcss: true,
+      }),
       css: (css) => {
         css.write('public/build/bundle.css');
       },
     }),
-
-    resolve({
-      browser: true,
-      dedupe: ['svelte'],
-    }),
+    customResolver,
     commonjs(),
 
     // In dev mode, call `npm run start` once
