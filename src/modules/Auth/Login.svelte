@@ -22,6 +22,7 @@
 </script>
 
 <style lang="scss" global>
+  /* purgecss start ignore */
   @mixin initialCloudAnimation(
     $animation-name,
     $elementWidth,
