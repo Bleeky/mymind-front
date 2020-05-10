@@ -4,4 +4,6 @@
   "svelteBracketNewLine": true,
   "svelteAllowShorthand": false,
   "singleQuote": true,
+  "trailingComma": "all",
+  "arrowParens": "always",
 }

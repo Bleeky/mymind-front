@@ -11,4 +11,9 @@ a:focus {
 #app {
   min-height: 100vh;
 }
+
+.navigation > a.active > div {
+  transition: color 0.4s, visibility 0s, opacity 0.5s linear;
+  @apply text-white;
+}
 /* purgecss end ignore */

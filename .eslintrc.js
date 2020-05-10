@@ -7,7 +7,7 @@ module.exports = {
     env: {
       browser: true,
     },
-    extends: ['airbnb-base'],
+    extends: ["airbnb-base"],
     plugins: [
       'svelte3',
     ],
@@ -17,6 +17,7 @@ module.exports = {
         processor: 'svelte3/svelte3',
         "rules": {
           "no-multiple-empty-lines": "off",
+          "import/first": "off",
           "import/no-unresolved": "off",
           "import/no-mutable-exports": "off",
           "import/no-duplicates": "off"

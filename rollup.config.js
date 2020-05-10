@@ -16,7 +16,23 @@ const customResolver = resolve({
   extensions: ['.mjs', '.js'],
 });
 const projectRootDir = path.resolve(__dirname);
-const aliases = ['modules', 'components', 'router'];
+const aliases = ['modules', 'components', 'router', 'stores'];
+const serve = () => {
+  let started = false;
+
+  return {
+    writeBundle() {
+      if (!started) {
+        started = true;
+
+        require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+          stdio: ['ignore', 'inherit', 'inherit'],
+          shell: true,
+        });
+      }
+    },
+  };
+};
 
 export default {
   input: 'src/main.js',
@@ -48,12 +64,7 @@ export default {
     customResolver,
     commonjs(),
 
-    // In dev mode, call `npm run start` once
-    // the bundle has been generated
     !production && serve(),
-
-    // Watch the `public` directory and refresh the
-    // browser on changes when not in production
     !production && livereload('public'),
     production && terser(),
   ],
@@ -61,20 +72,3 @@ export default {
     clearScreen: false,
   },
 };
-
-function serve() {
-  let started = false;
-
-  return {
-    writeBundle() {
-      if (!started) {
-        started = true;
-
-        require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-          stdio: ['ignore', 'inherit', 'inherit'],
-          shell: true,
-        });
-      }
-    },
-  };
-}

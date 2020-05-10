@@ -1,4 +1,4 @@
-<div class="z-10">
+<div class="z-10 sm:max-w-sm">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 292 102">
     <defs></defs>
     <path

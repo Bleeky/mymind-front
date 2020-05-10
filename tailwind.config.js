@@ -1,5 +1,8 @@
 module.exports = {
   theme: {
+    fontFamily: {
+      sans: ['Helvetica Neue', 'sans-serif'],
+    },
     extend: {
       colors: {
         'green-main': '#9AE6B4',

@@ -6,6 +6,14 @@
         Improve your thoughts, one step at a time.
       </div>
     </div>
+    <div class="mt-20 flex items-center justify-center">
+      <LoginForm
+        onSubmit="{(val) => {
+          loggedIn.set(true);
+          navigate('/daily', { replace: true });
+        }}"
+      />
+    </div>
   </div>
   <Clouds cloudNumber="1" />
   <Clouds cloudNumber="1" />
@@ -18,7 +26,10 @@
 </div>
 
 <script>
+  import { navigate } from 'svelte-routing';
   import { Logo, Clouds, SunLine } from 'components';
+  import LoginForm from './LoginForm.svelte';
+  import { loggedIn } from 'stores/auth';
 </script>
 
 <style lang="scss" global>
