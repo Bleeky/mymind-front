@@ -8,6 +8,7 @@ module.exports = {
         'green-main': '#9AE6B4',
         'green-secondary': '#CEFEE1',
         'transparent-white': 'rgba(255, 255, 255, 0.7)',
+        'transparent-gray': 'rgba(250, 250, 250, 0.8)',
       },
     },
     gradients: (theme) => ({

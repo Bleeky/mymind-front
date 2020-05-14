@@ -3,6 +3,7 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import alias from '@rollup/plugin-alias';
+
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 
@@ -13,7 +14,7 @@ const production = !process.env.ROLLUP_WATCH;
 const customResolver = resolve({
   browser: true,
   dedupe: ['svelte'],
-  extensions: ['.mjs', '.js'],
+  extensions: ['.mjs', '.js', '.svelte'],
 });
 const projectRootDir = path.resolve(__dirname);
 const aliases = ['modules', 'components', 'router', 'stores'];
@@ -38,9 +39,11 @@ export default {
   input: 'src/main.js',
   output: {
     sourcemap: true,
+    // format: 'esm',
+    // format: 'cjs',
     format: 'iife',
     name: 'app',
-    file: 'public/build/bundle.js',
+    dir: 'public/build',
   },
   plugins: [
     alias({
@@ -63,10 +66,13 @@ export default {
     }),
     customResolver,
     commonjs(),
-
     !production && serve(),
     !production && livereload('public'),
-    production && terser(),
+    production && terser({
+      compress: {
+        drop_console: true,
+      },
+    }),
   ],
   watch: {
     clearScreen: false,

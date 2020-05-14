@@ -9,11 +9,15 @@ a:focus {
   outline: none;
 }
 #app {
-  min-height: 100vh;
+  // min-height: 100vh;
 }
 
 .navigation > a.active > div {
   transition: color 0.4s, visibility 0s, opacity 0.5s linear;
   @apply text-white;
+}
+
+.typing {
+  @apply text-gray-600;
 }
 /* purgecss end ignore */

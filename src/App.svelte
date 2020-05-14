@@ -30,7 +30,7 @@
         <div class="flex z-10 navigation">
           <NavLink to="stats">
             <div
-              class="mr-10 stroke-current text-gray-800 cursor-pointer"
+              class="mr-12 stroke-current text-gray-800 cursor-pointer"
               bind:this="{linksRefs.stats}"
             >
               <StatsIcon />
@@ -38,7 +38,7 @@
           </NavLink>
           <NavLink to="daily">
             <div
-              class="mr-10 stroke-current text-gray-800 cursor-pointer"
+              class="mr-12 stroke-current text-gray-800 cursor-pointer"
               bind:this="{linksRefs.daily}"
             >
               <BookIcon />
@@ -46,7 +46,7 @@
           </NavLink>
           <NavLink to="history">
             <div
-              class="mr-10 stroke-current text-gray-800 cursor-pointer"
+              class="mr-12 stroke-current text-gray-800 cursor-pointer"
               bind:this="{linksRefs.history}"
             >
               <CalendarIcon />
@@ -68,7 +68,7 @@
 </div>
 
 <script>
-  import { getContext, onMount } from 'svelte';
+  import { getContext, onMount, onDestroy } from 'svelte';
   import { navigate } from 'svelte-routing';
   import { ROUTER } from 'svelte-routing/src/contexts';
   import { Logo } from 'components';
@@ -93,8 +93,17 @@
     selector.style.left = `${element.getBoundingClientRect().x -
       selector.clientWidth / 2}px`;
   };
+  const watchResize = () => {
+    if (linksRefs[currentRoute.split('/')[1]]) {
+      placeSelector(linksRefs[currentRoute.split('/')[1]]);
+    }
+  };
   onMount(() => {
     activeRoute = getContext(ROUTER).activeRoute;
+    window.addEventListener('resize', watchResize);
+  });
+  onDestroy(() => {
+    window.removeEventListener('resize', watchResize);
   });
   $: {
     if (selector && $activeRoute && $activeRoute.uri !== currentRoute) {
