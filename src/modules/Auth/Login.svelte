@@ -8,9 +8,10 @@
     </div>
     <div class="mt-20 flex items-center justify-center">
       <LoginForm
+        {mode}
         onSubmit="{(val) => {
-          loggedIn.set(true);
-          navigate('/daily', { replace: true });
+          console.error(val);
+          signup(val);
         }}"
       />
     </div>
@@ -30,6 +31,40 @@
   import { Logo, Clouds, SunLine } from 'components';
   import LoginForm from './LoginForm.svelte';
   import { loggedIn } from 'stores/auth';
+
+  import { SIGNUP, LOGIN } from 'api';
+  import { getClient, query, mutate } from 'svelte-apollo';
+
+  const client = getClient();
+  async function signup(credentials) {
+    try {
+      await mutate(client, {
+        mutation: SIGNUP,
+        variables: credentials,
+      });
+      await mutate(client, {
+        mutation: LOGIN,
+        variables: credentials,
+      });
+      loggedIn.set(true);
+      navigate('/daily', { replace: true });
+    } catch (error) {
+      console.error(error);
+      // TODO
+    }
+  }
+  async function signin(credentials) {
+    try {
+      await mutate(client, {
+        mutation: SIGNUP,
+        variables: credentials,
+      });
+    } catch (error) {
+      // TODO
+    }
+  }
+
+  export let mode = 'login';
 </script>
 
 <style lang="scss" global>

@@ -13,6 +13,9 @@
   <Route path="/history">
     <History />
   </Route>
+  <Route path="/signup">
+    <Login mode="signup" />
+  </Route>
   <Route path="/">
     <Login />
   </Route>

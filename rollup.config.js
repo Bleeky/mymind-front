@@ -17,7 +17,7 @@ const customResolver = resolve({
   extensions: ['.mjs', '.js', '.svelte'],
 });
 const projectRootDir = path.resolve(__dirname);
-const aliases = ['modules', 'components', 'router', 'stores'];
+const aliases = ['modules', 'components', 'router', 'stores', 'api'];
 const serve = () => {
   let started = false;
 

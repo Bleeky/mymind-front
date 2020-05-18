@@ -42,7 +42,6 @@
     "svelte-apollo": "^0.3.0",
     "svelte-forms-lib": "^1.1.0",
     "svelte-loadable": "^1.5.0",
-    "svelte-routing": "^1.4.2",
-    "svelte-typewriter": "^2.1.9"
+    "svelte-routing": "^1.4.2"
   }
 }

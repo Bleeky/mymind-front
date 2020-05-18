@@ -69,6 +69,8 @@
 
 <script>
   import { getContext, onMount, onDestroy } from 'svelte';
+  import ApolloClient from 'apollo-boost';
+  import { setClient } from 'svelte-apollo';
   import { navigate } from 'svelte-routing';
   import { ROUTER } from 'svelte-routing/src/contexts';
   import { Logo } from 'components';
@@ -82,6 +84,11 @@
   import RootRouter from 'router/RootRouter.svelte';
   import { loggedIn } from 'stores/auth';
   import Tailwindcss from './Tailwindcss.svelte';
+
+  const client = new ApolloClient({
+    uri: 'https://mymind.herokuapp.com/graphql',
+  });
+  setClient(client);
 
   let selector;
   const linksRefs = {};
