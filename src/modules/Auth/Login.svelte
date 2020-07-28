@@ -10,8 +10,7 @@
       <LoginForm
         {mode}
         onSubmit="{(val) => {
-          console.error(val);
-          signup(val);
+          onSubmit(val);
         }}"
       />
     </div>
@@ -30,36 +29,30 @@
   import { navigate } from 'svelte-routing';
   import { Logo, Clouds, SunLine } from 'components';
   import LoginForm from './LoginForm.svelte';
-  import { loggedIn } from 'stores/auth';
+  import { loggedIn, token } from 'stores/auth';
 
   import { SIGNUP, LOGIN } from 'api';
   import { getClient, query, mutate } from 'svelte-apollo';
 
   const client = getClient();
-  async function signup(credentials) {
+  async function onSubmit(credentials) {
     try {
-      await mutate(client, {
-        mutation: SIGNUP,
-        variables: credentials,
-      });
-      await mutate(client, {
+      if (mode === 'signup')
+        await mutate(client, {
+          mutation: SIGNUP,
+          variables: credentials,
+        });
+      let tokens = await mutate(client, {
         mutation: LOGIN,
         variables: credentials,
       });
-      loggedIn.set(true);
+      console.error(tokens.data.tokenAuth.token);
+      localStorage.setItem('token', tokens.data.tokenAuth.token);
+      $token = tokens.data.tokenAuth.token;
+      $loggedIn = true;
       navigate('/daily', { replace: true });
     } catch (error) {
       console.error(error);
-      // TODO
-    }
-  }
-  async function signin(credentials) {
-    try {
-      await mutate(client, {
-        mutation: SIGNUP,
-        variables: credentials,
-      });
-    } catch (error) {
       // TODO
     }
   }

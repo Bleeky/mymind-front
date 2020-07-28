@@ -1,12 +1,9 @@
 import { writable } from 'svelte/store';
 
-function store() {
-  const { subscribe, set, update } = writable(true);
+const tokenStorage = localStorage.getItem('token');
 
-  return {
-    subscribe,
-    set: (value) => set(value),
-  };
-}
+const token = writable(tokenStorage);
+const loggedIn = writable(false);
+const loggedUser = writable(false);
 
-export const loggedIn = store();
+export { loggedIn, token, loggedUser };

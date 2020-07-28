@@ -59,13 +59,13 @@
 
   export let onSubmit;
   export let moods = [
-    { icon: DepressedIcon, value: 'depressed' },
-    { icon: VerySadIcon, value: 'very_sad' },
-    { icon: SadIcon, value: 'sad' },
-    { icon: NeutralIcon, value: 'neutral' },
-    { icon: HappyIcon, value: 'happy' },
-    { icon: VeryHappyIcon, value: 'very_happy' },
-    { icon: EcstaticIcon, value: 'ecstatic' },
+    { icon: DepressedIcon, value: -3 },
+    { icon: VerySadIcon, value: -2 },
+    { icon: SadIcon, value: -1 },
+    { icon: NeutralIcon, value: 0 },
+    { icon: HappyIcon, value: 1 },
+    { icon: VeryHappyIcon, value: 2 },
+    { icon: EcstaticIcon, value: 3 },
   ];
 
   const { form, errors, state, handleChange, handleSubmit } = createForm({

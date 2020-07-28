@@ -56,8 +56,7 @@
         <div
           class="stroke-current text-gray-800 cursor-pointer"
           on:click="{() => {
-            navigate('/', { replace: true });
-            loggedIn.set(false);
+            logout();
           }}"
         >
           <LogoutIcon />
@@ -82,14 +81,28 @@
   } from 'components/Icons';
   import NavLink from 'components/NavLink.svelte';
   import RootRouter from 'router/RootRouter.svelte';
-  import { loggedIn } from 'stores/auth';
+  import { ME } from 'api';
+  import { query, subscribe } from 'svelte-apollo';
+  import { loggedIn, token } from 'stores/auth';
+
   import Tailwindcss from './Tailwindcss.svelte';
 
   const client = new ApolloClient({
-    uri: 'https://mymind.herokuapp.com/graphql',
+    uri: 'http://127.0.0.1:8000/graphql',
+    // uri: 'https://mymind.herokuapp.com/graphql',
+    request: (operation) => {
+      const activetoken = localStorage.getItem('token');
+      console.error(activetoken);
+      operation.setContext({
+        headers: {
+          authorization: activetoken ? `JWT ${activetoken}` : '',
+        },
+      });
+    },
   });
   setClient(client);
 
+  let user;
   let selector;
   const linksRefs = {};
   let activeRoute;
@@ -105,9 +118,34 @@
       placeSelector(linksRefs[currentRoute.split('/')[1]]);
     }
   };
+  async function logout() {
+    $token = null;
+    $loggedIn = false;
+    localStorage.removeItem('token');
+    navigate('/', { replace: true });
+  }
+  async function me() {
+    if (localStorage.getItem('token')) {
+      try {
+        user = query(client, {
+          query: ME,
+        });
+        const loggedInUser = await $user;
+        $loggedIn = true;
+        console.error('test', loggedInUser);
+      } catch (e) {
+        console.error('user not logged in', e);
+        navigate('/', { replace: true });
+        localStorage.removeItem('token');
+      }
+    } else {
+      navigate('/', { replace: true });
+    }
+  }
   onMount(() => {
     activeRoute = getContext(ROUTER).activeRoute;
     window.addEventListener('resize', watchResize);
+    me();
   });
   onDestroy(() => {
     window.removeEventListener('resize', watchResize);

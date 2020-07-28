@@ -83,10 +83,11 @@
       if (!values.password) {
         errs.password = 'Password is required';
       }
-      if (!values.passwordConfirm) {
+      if (mode === 'signup' && !values.passwordConfirm) {
         errs.passwordConfirm = 'Password confirmation is required';
       }
       if (
+        mode === 'signup' &&
         $form.password &&
         $form.passwordConfirm &&
         $form.password !== $form.passwordConfirm

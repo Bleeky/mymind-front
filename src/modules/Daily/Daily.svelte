@@ -3,14 +3,19 @@
     <DailyForm
       onSubmit="{(values) => {
         console.dir(values);
+        onSubmit({
+          description: values.gratefulFor,
+          mood: values.selectedMood,
+        });
       }}"
     />
   </div>
 </div>
 
 <script>
-  import { getClient, query } from 'svelte-apollo';
   import { gql } from 'apollo-boost';
+  import { CREATE_MOOD, GET_MOODS } from 'api';
+  import { getClient, query, mutate } from 'svelte-apollo';
   import DailyForm from './DailyForm.svelte';
 
   const USERS = gql`
@@ -25,10 +30,27 @@
   const users = query(client, {
     query: USERS,
   });
+  const moods = query(client, {
+    query: GET_MOODS,
+  });
 
-  $: {
-    console.log($users);
+  async function onSubmit(values) {
+    try {
+      const ret = await mutate(client, {
+        mutation: CREATE_MOOD,
+        variables: values,
+      });
+      console.error(ret);
+    } catch (error) {
+      console.error(error);
+      // TODO
+    }
   }
+
+  // $: {
+  //   console.log($users);
+  //   console.log($moods);
+  // }
 </script>
 
 <style lang="scss">
